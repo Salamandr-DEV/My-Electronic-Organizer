@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Исходные файлы">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Файлы заголовков">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Файлы ресурсов">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Файлы заголовков\Model">
+      <UniqueIdentifier>{542c984f-1afa-432a-abbe-93e2acd66b75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\View">
+      <UniqueIdentifier>{2821affe-1f60-47ae-a2ed-28acb218f97f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Presenter">
+      <UniqueIdentifier>{8c283b4c-4917-45e5-9a0e-121b0e0eab93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Model">
+      <UniqueIdentifier>{b7e43c5f-4ab0-4642-9557-ea1a8a0d40fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\View">
+      <UniqueIdentifier>{cfb2c654-af35-437f-891c-d51ea91c8c97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Presenter">
+      <UniqueIdentifier>{b3a07c34-7244-4697-939e-9e984389fae3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="MyApplication.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Исходные файлы\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="AlarmClock.cpp">
+      <Filter>Исходные файлы\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="MyFrame.cpp">
+      <Filter>Исходные файлы\View</Filter>
+    </ClCompile>
+    <ClCompile Include="View.cpp">
+      <Filter>Исходные файлы\View</Filter>
+    </ClCompile>
+    <ClCompile Include="Presenter.cpp">
+      <Filter>Исходные файлы\Presenter</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MyApplication.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Файлы заголовков\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="AlarmClock.h">
+      <Filter>Файлы заголовков\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="MyFrame.h">
+      <Filter>Файлы заголовков\View</Filter>
+    </ClInclude>
+    <ClInclude Include="View.h">
+      <Filter>Файлы заголовков\View</Filter>
+    </ClInclude>
+    <ClInclude Include="Presenter.h">
+      <Filter>Файлы заголовков\Presenter</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resource.rc">
+      <Filter>Файлы ресурсов</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

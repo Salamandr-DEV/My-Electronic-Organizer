@@ -52,8 +52,20 @@ void AlarmClock::SetOffTheAlarm()
 
 void AlarmClock::TurnOffTheAlarm()
 {
+
 }
 
 void AlarmClock::Ringing()
 {
+	wxMessageBox(message);
+}
+
+int AlarmClock::GetHour()
+{
+	return hour;
+}
+
+int AlarmClock::GetMinute()
+{
+	return minute;
 }

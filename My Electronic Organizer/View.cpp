@@ -21,3 +21,8 @@ void View::ShowFrame()
 {
 	frame->Show();
 }
+
+void View::SetAlarmClock(std::vector<std::vector<int>> &alarms)
+{
+	frame->SetAlarmClock(alarms);
+}

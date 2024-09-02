@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <wx/wx.h>
 #include <string>
 
 enum
@@ -29,6 +30,9 @@ public:
 	void TurnOffTheAlarm();
 
 	void Ringing();
+
+	int GetHour();
+	int GetMinute();
 
 private:
 	int hour;

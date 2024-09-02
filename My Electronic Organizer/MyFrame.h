@@ -110,6 +110,11 @@ private:
 	std::string file_path_txt;
 	std::string textmessage;
 
+	wxTimer *ontimer;
+	wxMediaCtrl *alarm_media;
+
+	std::vector<std::vector<int>> alarms;
+
 public:
 	MyFrame(Presenter *presenter);
 	MyFrame(const MyFrame &) = delete;
@@ -132,6 +137,8 @@ public:
 	void OnTime(wxCommandEvent& event);
 	void OnProgramm(wxCommandEvent& event);
 	//void OnMediaFinished(wxMediaEvent & event);
+
+	void SetAlarmClock(std::vector<std::vector<int>> &alarms);
 
 	//void Render(wxDC &dc);
 private:

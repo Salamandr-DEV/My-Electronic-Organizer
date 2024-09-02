@@ -2,6 +2,7 @@
 #pragma once
 
 #include "Model.h"
+#include <vector>
 
 class View;
 
@@ -13,6 +14,8 @@ public:
 	Presenter(Presenter&&) = delete;
 	~Presenter();
 
+	void OnAlarmtTime();
+	
 private:
 	View *view;
 	Model *model;

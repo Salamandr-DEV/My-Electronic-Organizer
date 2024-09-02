@@ -243,12 +243,12 @@ MyFrame::MyFrame(Presenter *presenter) :
 	mediactrl = new wxMediaCtrl(panel3, wxMY_ID, file_path);
 
 	//mediactrl ->ShowPlayerControls(wxMEDIACTRLPLAYERCONTROLS_STEP);	
-
+	media = mediactrl->Load(file_path);
 	count = 0;
 
-	wxMessageBox(now.Format());
-	wxMessageBox(now.Format(wxT("%H")));
-	wxMessageBox(now.Format(wxT("%M")));
+	//wxMessageBox(now.Format());
+	//wxMessageBox(now.Format(wxT("%H")));
+	//wxMessageBox(now.Format(wxT("%M")));
 
 	/*wxImage::AddHandler(new wxBMPHandler);
 	bitmap = wxBITMAP(back);
@@ -297,6 +297,35 @@ BOOL MySystemShutdown()
 void MyFrame::TimerAlarm(wxTimerEvent& event)
 {
 	wxDateTime now = wxDateTime::Now();
+	auto hour = wxAtoi(now.Format(wxT("%H")));
+	auto minute = wxAtoi(now.Format(wxT("%M")));
+	auto second = wxAtoi(now.Format(wxT("%S")));
+
+	presenter->OnAlarmtTime();
+
+	bool ringing = false;
+
+	for (const auto &alarm : this->alarms)
+	{
+		if (alarm[1] == hour && alarm[2] == minute && alarm[3] == second)
+		{
+			ringing = true;
+		}
+	}
+
+	//if (ringing)
+	//{
+	//	alarm_media->Play();
+	//}
+
+	//wxMessageDialog dialog(NULL, "", wxT("Будильник"), wxOK | wxICON_INFORMATION);
+	//switch (dialog.ShowModal())
+	//{
+	//case wxID_OK:
+	//	alarm_media->Stop();
+	//	break;
+	//}
+
 	date1 = now.Format();
 	date2 = now.Format(wxT("%X"));
 	date3 = now.Format(wxT("%x"));
@@ -309,7 +338,7 @@ void MyFrame::TimerAlarm(wxTimerEvent& event)
 
 	textmessage = text->GetLineText(0);
 
-	if (label2->GetLabelText() == labelALARM->GetLabelText())
+	if (ringing)
 	{
 		if (media == true)
 		{
@@ -328,6 +357,8 @@ void MyFrame::TimerAlarm(wxTimerEvent& event)
 			break;
 		}
 	}
+
+	this->alarms.clear();
 }
 //========================================================================================================================================
 void MyFrame::OnTimerMusic(wxTimerEvent& event)
@@ -340,7 +371,9 @@ void MyFrame::OnTimerMusic(wxTimerEvent& event)
 	}
 	SetStatusText("Будильние играет " + std::to_string(count) + " sc", 0);
 }
+
 //========================================================================================================================================
+
 void MyFrame::OnTimer(wxTimerEvent& event)
 {
 	wxDateTime now = wxDateTime::Now();
@@ -368,12 +401,14 @@ void MyFrame::OnTimer(wxTimerEvent& event)
 	}
 }
 
+//========================================================================================================================================
 
 MyFrame::~MyFrame()
 {
 }
 
 //========================================================================================================================================
+
 void MyFrame::OnSystem(wxCommandEvent& event)
 {
 	if (System->GetValue() == "Выберите режим" && "")
@@ -522,7 +557,19 @@ void MyFrame::OnProgramm(wxCommandEvent& event)
 		break;
 	}
 }
+
 //=======================================================================================================================================
+
+void MyFrame::SetAlarmClock(std::vector<std::vector<int>> &alarms)
+{
+	for (const auto &alarm : alarms)
+	{
+		this->alarms.push_back(alarm);
+	}
+}
+
+//=======================================================================================================================================
+
 void MyFrame::OnCalendar(wxCommandEvent& event)
 {
 	std::fstream file("Заметка.txt", std::ios::out);

@@ -38,14 +38,12 @@ class MyFrame : public wxFrame
 {
 private:
 	Presenter *presenter;
-	wxImage image;
-	wxBitmap bitmap;
 
-	wxComboBox* System;
+	wxComboBox *shutdown_list;
 
-	wxCalendarCtrl* calendar;
-	wxTextCtrl* textcalendar;
-	wxButton* buttoncalendar;
+	wxCalendarCtrl *calendar;
+	wxTextCtrl *textcalendar;
+	wxButton *buttoncalendar;
 
 	std::string stringdate;
 
@@ -57,13 +55,9 @@ private:
 	std::string meA;
 	std::string seA;
 
-	wxSpinCtrl* spinh;
-	wxSpinCtrl* spinm;
-	wxSpinCtrl* spins;
-
-	wxSpinCtrl* spinHAlarm;
-	wxSpinCtrl* spinMAlarm;
-	wxSpinCtrl* spinSAlarm;
+	wxSpinCtrl *spin_hour;
+	wxSpinCtrl *spin_minute;
+	wxSpinCtrl *spin_second;
 
 	wxMenu* menu1;
 	wxMenu* menu2;
@@ -75,34 +69,12 @@ private:
 	wxString date2;
 	wxString date3;
 
-	wxStaticText* labelh;
-	wxStaticText* labelm;
-	wxStaticText* labels;
-
-	wxStaticText* labelHAlarm;
-	wxStaticText* labelMAlarm;
-	wxStaticText* labelSAlarm;
-
-	wxStaticText* label;
-	wxStaticText* label2;
-	wxStaticText* labelexit;
-	wxStaticText* labelALARM;
-
-	wxPanel* panel;
-	wxPanel* panel2;
-	wxPanel* panel3;
-	wxNotebook* MyNotebook;
-	wxSound* sound;
-	wxMediaCtrl* mediactrl;
-
-	wxFilePickerCtrl* FilePicker;
+	wxFilePickerCtrl *sound_file_picker;
 
 	wxTimer* m_timer;
 	wxTimer* timeralarm;
 	wxTimer* timermusic;
-	wxFont font1;
-	wxFont font2;
-	wxTextCtrl* text;
+
 	bool media;
 	int count;
 
@@ -111,9 +83,34 @@ private:
 	std::string textmessage;
 
 	wxTimer *ontimer;
-	wxMediaCtrl *alarm_media;
 
 	std::vector<std::vector<int>> alarms;
+
+	wxNotebook *notebook;
+	wxNotebook *notebook_c;
+	wxNotebook *notebook_n;
+
+	wxFont font1;
+	wxFont font2;
+
+	wxStaticText *hour_text;
+	wxStaticText *minute_text;
+	wxStaticText *second_text;
+
+	wxPanel *panel_clock;
+	wxPanel *panel_notes;
+
+	wxSound *sound;
+	wxMediaCtrl *mediactrl;
+
+	wxTextCtrl *list_text;
+
+	wxStaticText *time_now_text;
+	wxStaticText *time_alarm_text;
+	wxStaticText *time_shutdown_text;
+
+	wxScrolledWindow *physics_panel;
+	wxScrolledWindow *pattern_panel;
 
 public:
 	MyFrame(Presenter *presenter);
@@ -139,6 +136,13 @@ public:
 	//void OnMediaFinished(wxMediaEvent & event);
 
 	void SetAlarmClock(std::vector<std::vector<int>> &alarms);
+
+	void CreateWindowsPanel();
+	void CreateMenu();
+
+	wxNotebook *CreateNotebook();
+	wxPanel *CreateClockPanel(wxWindow *parent);
+	wxPanel *CreateNotesPanel(wxWindow* parent);
 
 	//void Render(wxDC &dc);
 private:

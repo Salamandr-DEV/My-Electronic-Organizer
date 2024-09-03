@@ -14,6 +14,7 @@ enum
 {
 	TIMER_ID, EXIT_ID, SLEEP_ID, TIMERALARM_ID, ONSYSTEM_ID, ONALARM_ID, OFFALARM_ID, OP_ID, TIME_ID, PROG_ID, wxMY_ID, BT_CAL_ID, TIMERMUSIC_ID
 };
+
 //===============================================================================================================
 
 BEGIN_EVENT_TABLE(MyFrame, wxFrame)
@@ -31,155 +32,22 @@ EVT_TIMER(TIMERALARM_ID, TimerAlarm)
 //EVT_MEDIA_FINISHED(wxMY_ID, OnMediaFinished)
 END_EVENT_TABLE()
 
-//===============================================================================================================
+//========================================================================================================================================
+
 MyFrame::MyFrame(Presenter *presenter) :
 	wxFrame(nullptr, wxID_ANY, "Электронный органайзер"),
 	presenter(presenter)
 {
 	SetIcon(wxICON(Time));
-	//================================================================
-	MyNotebook = new wxNotebook(this, -1, wxDefaultPosition, wxDefaultSize);
-	//================================================================
-	panel3 = new wxPanel(MyNotebook, -1);
-	panel2 = new wxPanel(MyNotebook, -1);
-	panel = new wxPanel(MyNotebook, -1);
-	//================================================================
-	wxButton* onsystem = new wxButton(panel, ONSYSTEM_ID, wxT("Установить время"));
-	wxButton* onalarm = new wxButton(panel2, ONALARM_ID, wxT("Установить будильник"));
-	wxButton* offalarm = new wxButton(panel2, OFFALARM_ID, wxT("Удалить будильник"));
-	text = new wxTextCtrl(panel2, -1, wxT("Надпись для будильника ..."), wxDefaultPosition, wxDefaultSize, /*wxTE_MULTILINE */ 0);
-	System = new wxComboBox(panel, -1, wxString("Выберите режим"), wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
-	System->AppendString("Спящий режим");
-	System->AppendString("Выключение компьютера");
-	//================================================================
-	label = new wxStaticText(panel, -1, wxT(""));
-	//================================================================
-	label2 = new wxStaticText(panel2, -1, wxT(""));
-	//================================================================
-	labelexit = new wxStaticText(panel, -1, wxT("    :    :    "));
-	labelexit->SetFont(wxFont(35, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false));
-	//================================================================
-	labelALARM = new wxStaticText(panel2, -1, wxT("    :    :    "));
-	labelALARM->SetFont(wxFont(35, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false));
-	//================================================================
-	m_timer = new wxTimer(this, TIMER_ID);
+
+	//m_timer = new wxTimer(this, TIMER_ID);
 	timeralarm = new wxTimer(this, TIMERALARM_ID);
 	timermusic = new wxTimer(this, TIMERMUSIC_ID);
-	m_timer->Start(1000, false);
+	//m_timer->Start(1000, false);
 	timeralarm->Start(1000, false);
-	//timermusic->Start(1000, false);
-	//================================================================
-	spinh = new wxSpinCtrl(panel, 10, "0");
-	spinm = new wxSpinCtrl(panel, 10, "0");
-	spins = new wxSpinCtrl(panel, 10, "0");
-	//================================================================
-	spinHAlarm = new wxSpinCtrl(panel2, 10, "0");
-	spinMAlarm = new wxSpinCtrl(panel2, 10, "0");
-	spinSAlarm = new wxSpinCtrl(panel2, 10, "0");
-	//================================================================
-	labelh = new wxStaticText(panel, -1, wxT("Часы"));
-	labelm = new wxStaticText(panel, -1, wxT("Минуты"));
-	labels = new wxStaticText(panel, -1, wxT("Секунды"));
-	//================================================================
-	labelHAlarm = new wxStaticText(panel2, -1, wxT("Часы"));
-	labelMAlarm = new wxStaticText(panel2, -1, wxT("Минуты"));
-	labelSAlarm = new wxStaticText(panel2, -1, wxT("Секунды"));
-	//================================================================
-	font1 = wxFont(14, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false);
-	font2 = wxFont(35, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false);
-	labelh->SetFont(font1);
-	labelm->SetFont(font1);
-	labels->SetFont(font1);
 
-	labelHAlarm->SetFont(font1);
-	labelMAlarm->SetFont(font1);
-	labelSAlarm->SetFont(font1);
-	//================================================================
-	wxBoxSizer* box1 = new wxBoxSizer(wxVERTICAL);
-	//================================================================
-	wxBoxSizer* boxh = new wxBoxSizer(wxHORIZONTAL);
-	wxBoxSizer* boxm = new wxBoxSizer(wxHORIZONTAL);
-	wxBoxSizer* boxs = new wxBoxSizer(wxHORIZONTAL);
-	//================================================================
-	wxBoxSizer* boxHAlarm = new wxBoxSizer(wxHORIZONTAL);
-	wxBoxSizer* boxMAlarm = new wxBoxSizer(wxHORIZONTAL);
-	wxBoxSizer* boxSAlarm = new wxBoxSizer(wxHORIZONTAL);
-	//================================================================
-	wxBoxSizer* boxsystem = new wxBoxSizer(wxHORIZONTAL);
-	//================================================================
-	wxBoxSizer* box11 = new wxBoxSizer(wxVERTICAL);
-	//================================================================
-	wxBoxSizer* box2 = new wxBoxSizer(wxVERTICAL);
-	wxBoxSizer* box33 = new wxBoxSizer(wxVERTICAL);
-	//================================================================
-	FilePicker = new wxFilePickerCtrl(panel2, wxID_ANY, wxEmptyString, wxT("Музыку для будильника"), wxT("*.wav;*"), wxDefaultPosition, wxDefaultSize, wxFLP_DEFAULT_STYLE);
-	//================================================================
-	wxStaticBox* Box = new wxStaticBox(panel, wxID_ANY, "Время сейчас");
-	wxStaticBoxSizer* box3 = new wxStaticBoxSizer(Box, wxHORIZONTAL);
-	//================================================================
-	wxStaticBox* Boxexit = new wxStaticBox(panel, wxID_ANY, "Время выключения");
-	wxStaticBoxSizer* boxexit = new wxStaticBoxSizer(Boxexit, wxHORIZONTAL);
-	//================================================================
-	//================================================================
-	wxStaticBox* BoxAlarm = new wxStaticBox(panel2, wxID_ANY, "Время сейчас");
-	wxStaticBoxSizer* box4 = new wxStaticBoxSizer(BoxAlarm, wxHORIZONTAL);
-	//================================================================
-	wxStaticBox* BoxAlarmClock = new wxStaticBox(panel2, wxID_ANY, "Время будильника");
-	wxStaticBoxSizer* boxalarm = new wxStaticBoxSizer(BoxAlarmClock, wxHORIZONTAL);
-	////================================================================
-	boxh->Add(spinh, 0, wxALL, 10);
-	boxh->Add(labelh, 0, wxALL, 10);
-	boxm->Add(spinm, 0, wxALL, 10);
-	boxm->Add(labelm, 0, wxALL, 10);
-	boxs->Add(spins, 0, wxALL, 10);
-	boxs->Add(labels, 0, wxALL, 10);
-	//================================================================
-	boxHAlarm->Add(spinHAlarm, 0, wxALL, 10);
-	boxHAlarm->Add(labelHAlarm, 0, wxALL, 10);
-	boxMAlarm->Add(spinMAlarm, 0, wxALL, 10);
-	boxMAlarm->Add(labelMAlarm, 0, wxALL, 10);
-	boxSAlarm->Add(spinSAlarm, 0, wxALL, 10);
-	boxSAlarm->Add(labelSAlarm, 0, wxALL, 10);
-	//================================================================
-	box1->Add(boxh, 0, wxALL);
-	box1->Add(boxm, 0, wxALL);
-	box1->Add(boxs, 0, wxALL);
-	//================================================================
-	box2->Add(boxHAlarm, 0, wxALL);
-	box2->Add(boxMAlarm, 0, wxALL);
-	box2->Add(boxSAlarm, 0, wxALL);
-	//================================================================
-	wxBoxSizer* boxbutton = new wxBoxSizer(wxHORIZONTAL);
-	boxbutton->Add(onalarm, 0, wxLEFT | wxRIGHT | wxTOP | wxDOWN, 5);
-	boxbutton->Add(offalarm, 0, wxLEFT | wxRIGHT | wxTOP | wxDOWN, 5);
-	box2->Add(boxbutton, 0);
-	box2->Add(FilePicker, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP | wxDOWN, 5);
-	box2->Add(text, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP | wxDOWN, 5);
-	//================================================================
-	boxsystem->Add(System, 0, wxALL, 5);
-	boxsystem->Add(onsystem, 0, wxALL, 5);
-	//================================================================
-	box1->Add(boxsystem, 0, wxALL, 2);
-	//================================================================
-	box3->Add(label, 0, wxLEFT | wxRIGHT | wxTOP | wxDOWN, 2);
-	box1->Add(box3, 1, wxEXPAND | wxLEFT | wxRIGHT | wxTOP | wxDOWN, 5);
-	//================================================================
-	box4->Add(label2, 0, wxLEFT | wxRIGHT | wxTOP | wxDOWN, 2);
-	box2->Add(box4, 1, wxEXPAND | wxLEFT | wxRIGHT | wxTOP | wxDOWN, 5);
-	//================================================================
-	boxexit->Add(labelexit, 0, wxLEFT | wxRIGHT | wxTOP | wxDOWN, 2);
-	box1->Add(boxexit, 1, wxEXPAND | wxLEFT | wxRIGHT | wxTOP | wxDOWN, 5);
-	//================================================================
-	boxalarm->Add(labelALARM, 0, wxLEFT | wxRIGHT | wxTOP | wxDOWN, 2);
-	box2->Add(boxalarm, 1, wxEXPAND | wxLEFT | wxRIGHT | wxTOP | wxDOWN, 5);
-	//================================================================
-	wxGridSizer* sizer1 = new wxGridSizer(1, 1, 0, 0);
-	wxGridSizer* sizer2 = new wxGridSizer(1, 1, 0, 0);
-	wxGridSizer* sizer3 = new wxGridSizer(1, 1, 0, 0);
-	//================================================================
-	sizer1->Add(panel, 1, wxEXPAND | wxLEFT | wxRIGHT | wxTOP | wxDOWN, 10);
-	sizer2->Add(panel2, 1, wxEXPAND | wxLEFT | wxRIGHT | wxTOP | wxDOWN, 10);
-	sizer3->Add(panel3, 1, wxEXPAND | wxLEFT | wxRIGHT | wxTOP | wxDOWN, 10);
+	CreateWindowsPanel();
+
 	//================================================================
 	wxMenuBar* menubar = new wxMenuBar;
 	SetMenuBar(menubar);
@@ -193,37 +61,7 @@ MyFrame::MyFrame(Presenter *presenter) :
 	menu2->Append(TIME_ID, "Время");
 	menubar->Append(menu3, "Справка");
 	menu3->Append(PROG_ID, "О программе ...");
-	//================================================================
-	calendar = new wxCalendarCtrl(panel3, 999, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxCAL_SHOW_HOLIDAYS);
-	textcalendar = new wxTextCtrl(panel3, -1, wxT("Заметка ..."), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE);
-	buttoncalendar = new wxButton(panel3, BT_CAL_ID, wxT("Сохранить заметку "));
-	box33->Add(calendar, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP | wxDOWN, 5);
-	box33->Add(textcalendar, 1, wxEXPAND | wxLEFT | wxRIGHT | wxTOP | wxDOWN, 5);
-	box33->Add(buttoncalendar, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP | wxDOWN, 5);
 
-	panel->SetSizer(box1);
-	panel2->SetSizer(box2);
-	panel3->SetSizer(box33);
-	//================================================================
-	box11->Add(MyNotebook, 1, wxEXPAND);
-	SetSizer(box11);
-	//================================================================
-	MyNotebook->AddPage(panel, wxT("Время"));
-	MyNotebook->AddPage(panel2, wxT("Будильник"));
-	MyNotebook->AddPage(panel3, wxT("Заметки"));
-	//================================================================	
-	spinh->SetMax(23);
-	spinm->SetMax(59);
-	spins->SetMax(59);
-	//================================================================	
-	spinHAlarm->SetMax(23);
-	spinMAlarm->SetMax(59);
-	spinSAlarm->SetMax(59);
-	//================================================================
-	wxSize k = wxSize(374, 576);
-	this->SetSize(k);
-	this->SetMinSize(k);
-	this->SetMaxSize(k);
 	//================================================================	
 	this->Connect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(MyFrame::OnClose));
 	//this ->Connect(wxEVT_MEDIA_FINISHED, wxMediaEventHandler(MyFrame::OnMediaFinished));
@@ -239,22 +77,10 @@ MyFrame::MyFrame(Presenter *presenter) :
 		file << "Программа была запущена в " << date1 << std::endl;
 	}
 	file.close();
-
-	mediactrl = new wxMediaCtrl(panel3, wxMY_ID, file_path);
-
-	//mediactrl ->ShowPlayerControls(wxMEDIACTRLPLAYERCONTROLS_STEP);	
-	media = mediactrl->Load(file_path);
-	count = 0;
-
-	//wxMessageBox(now.Format());
-	//wxMessageBox(now.Format(wxT("%H")));
-	//wxMessageBox(now.Format(wxT("%M")));
-
-	/*wxImage::AddHandler(new wxBMPHandler);
-	bitmap = wxBITMAP(back);
-	image = bitmap.ConvertToImage();*/
 }
+
 //========================================================================================================================================
+
 BOOL MySystemShutdown()
 {
 	HANDLE hToken;
@@ -293,7 +119,9 @@ BOOL MySystemShutdown()
 	//shutdown was successful
 	return TRUE;
 }
+
 //========================================================================================================================================
+
 void MyFrame::TimerAlarm(wxTimerEvent& event)
 {
 	wxDateTime now = wxDateTime::Now();
@@ -313,30 +141,17 @@ void MyFrame::TimerAlarm(wxTimerEvent& event)
 		}
 	}
 
-	//if (ringing)
-	//{
-	//	alarm_media->Play();
-	//}
-
-	//wxMessageDialog dialog(NULL, "", wxT("Будильник"), wxOK | wxICON_INFORMATION);
-	//switch (dialog.ShowModal())
-	//{
-	//case wxID_OK:
-	//	alarm_media->Stop();
-	//	break;
-	//}
-
 	date1 = now.Format();
 	date2 = now.Format(wxT("%X"));
 	date3 = now.Format(wxT("%x"));
 
-	label2->SetFont(font2);
+	time_now_text->SetFont(font2);
 
-	label2->SetLabelText(date2);// вызываем ф-цию.
+	time_now_text->SetLabelText(date2);// вызываем ф-цию.
 
-	file_path = FilePicker->GetPath();
+	file_path = sound_file_picker->GetPath();
 
-	textmessage = text->GetLineText(0);
+	textmessage = list_text->GetLineText(0);
 
 	if (ringing)
 	{
@@ -358,9 +173,26 @@ void MyFrame::TimerAlarm(wxTimerEvent& event)
 		}
 	}
 
+	if (time_now_text->GetLabelText() == he + ":" + me + ":" + se)
+	{
+		if (shutdown_list->GetValue() == "Перезагрузка компьютера")
+		{
+			//system("shutdown –r -f –t 0");
+			//wxMessageBox(wxT("Спящий режим"));
+			MySystemShutdown();
+		}
+		if (shutdown_list->GetValue() == "Выключение компьютера")
+		{
+			system("shutdown -s -f -t 0");
+			//wxMessageBox(wxT("Выключение компьютера"));
+		}
+	}
+
 	this->alarms.clear();
 }
+
 //========================================================================================================================================
+
 void MyFrame::OnTimerMusic(wxTimerEvent& event)
 {
 	mediactrl->Play();
@@ -376,29 +208,14 @@ void MyFrame::OnTimerMusic(wxTimerEvent& event)
 
 void MyFrame::OnTimer(wxTimerEvent& event)
 {
-	wxDateTime now = wxDateTime::Now();
-	date1 = now.Format();
-	date2 = now.Format(wxT("%X"));
-	date3 = now.Format(wxT("%x"));
+	//wxDateTime now = wxDateTime::Now();
+	//date1 = now.Format();
+	//date2 = now.Format(wxT("%X"));
+	//date3 = now.Format(wxT("%x"));
 
-	label->SetFont(font2);
+	//label->SetFont(font2);
 
-	label->SetLabelText(date2);// вызываем ф-цию.
-
-	if (label->GetLabelText() == he + ":" + me + ":" + se)
-	{
-		if (System->GetValue() == "Перезагрузка компьютера")
-		{
-			//system("shutdown –r -f –t 0");
-			//wxMessageBox(wxT("Спящий режим"));
-			MySystemShutdown();
-		}
-		if (System->GetValue() == "Выключение компьютера")
-		{
-			system("shutdown -s -f -t 0");
-			//wxMessageBox(wxT("Выключение компьютера"));
-		}
-	}
+	//label->SetLabelText(date2);// вызываем ф-цию.
 }
 
 //========================================================================================================================================
@@ -411,17 +228,17 @@ MyFrame::~MyFrame()
 
 void MyFrame::OnSystem(wxCommandEvent& event)
 {
-	if (System->GetValue() == "Выберите режим" && "")
+	if (shutdown_list->GetValue() == "Выберите режим" && "")
 	{
 		wxMessageBox(wxT("Выберите режим"));
 	}
 	else
 	{
-		he = std::to_string(spinh->GetValue());
-		me = std::to_string(spinm->GetValue());
-		se = std::to_string(spins->GetValue());
+		he = std::to_string(spin_hour->GetValue());
+		me = std::to_string(spin_minute->GetValue());
+		se = std::to_string(spin_second->GetValue());
 
-		labelexit->SetFont(wxFont(35, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false));
+		time_shutdown_text->SetFont(wxFont(35, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false));
 
 		for (int i = 0; i < 10; i++)
 		{
@@ -439,24 +256,26 @@ void MyFrame::OnSystem(wxCommandEvent& event)
 				se = "0" + n;
 			}
 		}
-		labelexit->SetLabelText(he + ":" + me + ":" + se);// вызываем ф-цию.
+		time_shutdown_text->SetLabelText(he + ":" + me + ":" + se);// вызываем ф-цию.
 	}
 	std::fstream file("Alarmclock.txt", std::ios::out | std::ios::app);
 	if (file.is_open())
 	{
-		file << System->GetValue() << " установлено/установлен в " << date1 << " на " << labelexit->GetLabelText() << std::endl;
+		file << shutdown_list->GetValue() << " установлено/установлен в " << date1 << " на " << time_shutdown_text->GetLabelText() << std::endl;
 	}
 	file.close();
-	SetStatusText("Установлен " + System->GetValue() + " на время " + labelexit->GetLabelText(), 0);
+	SetStatusText("Установлен " + shutdown_list->GetValue() + " на время " + time_shutdown_text->GetLabelText(), 0);
 }
+
 //========================================================================================================================================
+
 void MyFrame::OnAlarm(wxCommandEvent& event)
 {
 	if (!file_path.empty())
 	{
-		heA = std::to_string(spinHAlarm->GetValue());
-		meA = std::to_string(spinMAlarm->GetValue());
-		seA = std::to_string(spinSAlarm->GetValue());
+		heA = std::to_string(spin_hour->GetValue());
+		meA = std::to_string(spin_minute->GetValue());
+		seA = std::to_string(spin_second->GetValue());
 
 		media = mediactrl->Load(file_path);
 
@@ -478,7 +297,7 @@ void MyFrame::OnAlarm(wxCommandEvent& event)
 				seA = "0" + n;
 			}
 		}
-		labelALARM->SetLabelText(heA + ":" + meA + ":" + seA);// вызываем ф-цию.
+		time_alarm_text->SetLabelText(heA + ":" + meA + ":" + seA);// вызываем ф-цию.
 	}
 	else
 	{
@@ -488,19 +307,23 @@ void MyFrame::OnAlarm(wxCommandEvent& event)
 	std::fstream file("Alarmclock.txt", std::ios::out | std::ios::app);
 	if (file.is_open())
 	{
-		file << "Будильник был установлен в " << date1 << " на " << labelALARM->GetLabelText() << "-" << textmessage << std::endl;
+		file << "Будильник был установлен в " << date1 << " на " << time_alarm_text->GetLabelText() << "-" << textmessage << std::endl;
 	}
 	file.close();
 }
+
 //=======================================================================================================================================
+
 void MyFrame::OffAlarm(wxCommandEvent& event)
 {
 	heA = "    ";
 	meA = "    ";
 	seA = "    ";
-	labelALARM->SetLabelText(heA + ":" + meA + ":" + seA);// вызываем ф-цию.
+	time_alarm_text->SetLabelText(heA + ":" + meA + ":" + seA);// вызываем ф-цию.
 }
+
 //=======================================================================================================================================
+
 void MyFrame::OnClose(wxCloseEvent& event)
 {
 	wxMessageDialog* dial = new wxMessageDialog(NULL, wxT("Вы точно хотите выйти?"), wxT("Выход"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION);
@@ -522,7 +345,9 @@ void MyFrame::OnClose(wxCloseEvent& event)
 
 	}
 }
+
 //=======================================================================================================================================
+
 void MyFrame::OnOpen(wxCommandEvent& event)
 {
 	wxMessageDialog dialog(NULL, wxT("Открой этот мир для себя"), wxT("Открыть"), wxOK | wxICON_INFORMATION);
@@ -532,13 +357,17 @@ void MyFrame::OnOpen(wxCommandEvent& event)
 		break;
 	}
 }
+
 //=======================================================================================================================================
+
 void MyFrame::OnClose(wxCommandEvent& event)
 {
 	Close(true);
 }
 //=======================================================================================================================================
+
 void MyFrame::OnTime(wxCommandEvent& event)
+
 {
 	wxMessageDialog dialog(NULL, wxT("Нельзя завести 500 миллионов друзей не нажив ни одного врага"), wxT("Время"), wxOK | wxICON_INFORMATION);
 	switch (dialog.ShowModal())
@@ -547,7 +376,9 @@ void MyFrame::OnTime(wxCommandEvent& event)
 		break;
 	}
 }
+
 //=======================================================================================================================================
+
 void MyFrame::OnProgramm(wxCommandEvent& event)
 {
 	wxMessageDialog dialog(NULL, wxT("Органайзер для выключения компьютера и установления будильника \nВасиленко Ярослав 2018 год ©"), wxT("Справка о программе"), wxOK | wxICON_INFORMATION);
@@ -566,6 +397,195 @@ void MyFrame::SetAlarmClock(std::vector<std::vector<int>> &alarms)
 	{
 		this->alarms.push_back(alarm);
 	}
+}
+
+//=======================================================================================================================================
+
+void MyFrame::CreateWindowsPanel()
+{
+	notebook = CreateNotebook();
+}
+
+//=======================================================================================================================================
+
+void MyFrame::CreateMenu()
+{
+}
+
+//=======================================================================================================================================
+
+wxNotebook *MyFrame::CreateNotebook()
+{
+	notebook = new wxNotebook(this, -1, wxDefaultPosition, wxDefaultSize);
+
+	notebook_c = new wxNotebook(notebook, wxID_ANY);
+	notebook_n = new wxNotebook(notebook, wxID_ANY);
+
+	const auto physics_parameters = CreateClockPanel(notebook_c);
+	const auto pattern_parameters = CreateNotesPanel(notebook_n);
+
+	notebook->AddPage(notebook_c, L"Время", true);
+	notebook->AddPage(notebook_n, L"Заметки", true);
+
+	notebook->SetSelection(0);
+
+	return notebook;
+}
+
+//=======================================================================================================================================
+
+wxPanel *MyFrame::CreateClockPanel(wxWindow *parent)
+{
+	//	physics_panel = new wxScrolledWindow(parent);
+	//physics_panel->Fit();
+	//physics_panel->SetScrollRate(0, 38);
+
+	panel_clock = new wxPanel(parent, -1);
+	panel_clock->SetBackgroundColour(wxColour(255, 255, 255));
+
+	wxButton *onsystem = new wxButton(panel_clock, ONSYSTEM_ID, wxT("Установить время для режима"));
+	wxButton *onalarm = new wxButton(panel_clock, ONALARM_ID, wxT("Установить будильник"));
+	wxButton *offalarm = new wxButton(panel_clock, OFFALARM_ID, wxT("Удалить будильник"));
+
+	list_text = new wxTextCtrl(panel_clock, -1, wxT("..."), wxDefaultPosition, wxDefaultSize, /*wxTE_MULTILINE */ 0);
+
+	shutdown_list = new wxComboBox(panel_clock, -1, wxString("Выберите режим"), wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
+	shutdown_list->AppendString("Спящий режим");
+	shutdown_list->AppendString("Выключение компьютера");
+
+	time_now_text = new wxStaticText(panel_clock, -1, wxT(""));
+	time_now_text->SetFont(wxFont(35, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false));
+
+	time_alarm_text = new wxStaticText(panel_clock, -1, wxT("    :    :    "));
+	time_alarm_text->SetFont(wxFont(35, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false));
+
+	time_shutdown_text = new wxStaticText(panel_clock, -1, wxT("    :    :    "));
+	time_shutdown_text->SetFont(wxFont(35, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false));
+
+	spin_hour = new wxSpinCtrl(panel_clock, 10, "0");
+	spin_minute = new wxSpinCtrl(panel_clock, 10, "0");
+	spin_second = new wxSpinCtrl(panel_clock, 10, "0");
+
+	hour_text = new wxStaticText(panel_clock, -1, wxT("Часы"));
+	minute_text = new wxStaticText(panel_clock, -1, wxT("Минуты"));
+	second_text = new wxStaticText(panel_clock, -1, wxT("Секунды"));
+
+	font1 = wxFont(14, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false);
+	font2 = wxFont(35, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false);
+
+	hour_text->SetFont(font1);
+	minute_text->SetFont(font1);
+	second_text->SetFont(font1);
+
+	sound_file_picker = new wxFilePickerCtrl(panel_clock, wxID_ANY, wxEmptyString, wxT("Музыку для будильника"), wxT("*.wav;*"), wxDefaultPosition, wxDefaultSize, wxFLP_DEFAULT_STYLE);
+
+	spin_hour->SetMax(23);
+	spin_minute->SetMax(23);
+	spin_second->SetMax(23);
+
+	mediactrl = new wxMediaCtrl(panel_clock, wxMY_ID, file_path);
+
+	//mediactrl ->ShowPlayerControls(wxMEDIACTRLPLAYERCONTROLS_STEP);	
+	media = mediactrl->Load(file_path);
+	count = 0;
+
+	wxBoxSizer* box1 = new wxBoxSizer(wxVERTICAL);
+
+	wxBoxSizer* boxh = new wxBoxSizer(wxHORIZONTAL);
+	wxBoxSizer* boxm = new wxBoxSizer(wxHORIZONTAL);
+	wxBoxSizer* boxs = new wxBoxSizer(wxHORIZONTAL);
+
+	wxBoxSizer* boxHAlarm = new wxBoxSizer(wxHORIZONTAL);
+	wxBoxSizer* boxMAlarm = new wxBoxSizer(wxHORIZONTAL);
+	wxBoxSizer* boxSAlarm = new wxBoxSizer(wxHORIZONTAL);
+
+	wxBoxSizer* boxsystem = new wxBoxSizer(wxHORIZONTAL);
+
+	wxBoxSizer* box11 = new wxBoxSizer(wxVERTICAL);
+
+	wxBoxSizer* box2 = new wxBoxSizer(wxVERTICAL);
+
+	wxStaticBox* Box = new wxStaticBox(panel_clock, wxID_ANY, "Время сейчас");
+	wxStaticBoxSizer* box3 = new wxStaticBoxSizer(Box, wxHORIZONTAL);
+
+	wxStaticBox* Boxexit = new wxStaticBox(panel_clock, wxID_ANY, "Время выключения");
+	wxStaticBoxSizer* boxexit = new wxStaticBoxSizer(Boxexit, wxHORIZONTAL);
+
+	wxStaticBox* BoxAlarmClock = new wxStaticBox(panel_clock, wxID_ANY, "Время будильника");
+	wxStaticBoxSizer* boxalarm = new wxStaticBoxSizer(BoxAlarmClock, wxHORIZONTAL);
+
+	//================================================================
+	boxh->Add(spin_hour, 0, wxALL, 10);
+	boxh->Add(hour_text, 0, wxALL, 10);
+	boxm->Add(spin_minute, 0, wxALL, 10);
+	boxm->Add(minute_text, 0, wxALL, 10);
+	boxs->Add(spin_second, 0, wxALL, 10);
+	boxs->Add(second_text, 0, wxALL, 10);
+
+	spin_hour->SetMinSize(wxSize(200, 20));
+	spin_minute->SetMinSize(wxSize(200, 20));
+	spin_second->SetMinSize(wxSize(200, 20));
+
+	box1->Add(boxh, 0, wxALL);
+	box1->Add(boxm, 0, wxALL);
+	box1->Add(boxs, 0, wxALL);
+
+	wxBoxSizer* boxbutton = new wxBoxSizer(wxHORIZONTAL);
+	boxbutton->Add(onalarm, 0, wxLEFT | wxRIGHT | wxTOP | wxDOWN, 5);
+	boxbutton->Add(offalarm, 0, wxLEFT | wxRIGHT | wxTOP | wxDOWN, 5);
+	box2->Add(boxbutton, 0);
+	box2->Add(sound_file_picker, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP | wxDOWN, 5);
+	box2->Add(list_text, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP | wxDOWN, 5);
+
+	//================================================================
+	boxsystem->Add(shutdown_list, 0, wxALL, 5);
+	boxsystem->Add(onsystem, 0, wxALL, 5);
+	//================================================================
+	box1->Add(boxsystem, 0, wxALL, 2);
+	//================================================================
+	box3->Add(time_now_text, 0, wxLEFT | wxRIGHT | wxTOP | wxDOWN, 2);
+	box1->Add(box3, 1, wxEXPAND | wxLEFT | wxRIGHT | wxTOP | wxDOWN, 5);
+	//================================================================
+	boxexit->Add(time_alarm_text, 0, wxLEFT | wxRIGHT | wxTOP | wxDOWN, 2);
+	box1->Add(boxexit, 1, wxEXPAND | wxLEFT | wxRIGHT | wxTOP | wxDOWN, 5);
+	//================================================================
+	boxalarm->Add(time_shutdown_text, 0, wxLEFT | wxRIGHT | wxTOP | wxDOWN, 2);
+	box2->Add(boxalarm, 1, wxEXPAND | wxLEFT | wxRIGHT | wxTOP | wxDOWN, 5);
+	//================================================================
+	auto sizer_1 = new wxBoxSizer(wxVERTICAL);
+	//================================================================
+	sizer_1->Add(box1, 1, wxEXPAND | wxLEFT | wxRIGHT | wxTOP | wxDOWN, 10);
+	sizer_1->Add(box2, 1, wxEXPAND | wxLEFT | wxRIGHT | wxTOP | wxDOWN, 10);
+
+	panel_clock->SetSizer(sizer_1);
+
+	sizer_1->Fit(panel_clock);
+
+	return panel_clock;
+}
+
+//=======================================================================================================================================
+
+wxPanel *MyFrame::CreateNotesPanel(wxWindow *parent)
+{
+	panel_notes = new wxPanel(parent, -1);
+
+	//================================================================
+	calendar = new wxCalendarCtrl(panel_notes, 999, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxCAL_SHOW_HOLIDAYS);
+	textcalendar = new wxTextCtrl(panel_notes, -1, wxT("Заметка ..."), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE);
+	buttoncalendar = new wxButton(panel_notes, BT_CAL_ID, wxT("Сохранить заметку "));
+
+	wxBoxSizer* box33 = new wxBoxSizer(wxVERTICAL);
+
+	box33->Add(calendar, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP | wxDOWN, 5);
+	box33->Add(textcalendar, 1, wxEXPAND | wxLEFT | wxRIGHT | wxTOP | wxDOWN, 5);
+	box33->Add(buttoncalendar, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP | wxDOWN, 5);
+
+	panel_notes->SetSizer(box33);
+
+	box33->Fit(panel_notes);
+
+	return panel_notes;
 }
 
 //=======================================================================================================================================
